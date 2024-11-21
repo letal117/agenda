@@ -1,10 +1,9 @@
-<!-- accounts/templates/accounts/home.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
+    <title>Agendar Cita</title>
     <style>
         /* Estilos generales */
         body {
@@ -64,7 +63,15 @@
             margin: 1rem 0;
         }
 
-        /* Botones */
+        /* Formulario */
+        .appointment-form input, .appointment-form select {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
         .btn {
             padding: 0.8rem 1.5rem;
             border: none;
@@ -73,9 +80,10 @@
             cursor: pointer;
             text-decoration: none;
             color: #fff;
+            margin-top: 1rem;
         }
 
-        .btn-login {
+        .btn-submit {
             background-color: #4CAF50;
         }
 
@@ -91,7 +99,7 @@
 <body>
     <!-- Barra de navegación -->
     <div class="navbar">
-        <span>Página Principal</span>
+        <span>Agendar Cita</span>
         {% if user.is_authenticated %}
             <div>
                 <span>Bienvenido, {{ user.username }}</span>
@@ -108,15 +116,18 @@
     <!-- Contenedor principal -->
     <div class="container">
         <div class="welcome-card">
-            <h1>Bienvenido a la Página Principal</h1>
+            <h1>Agenda tu Cita</h1>
 
             {% if user.is_authenticated %}
-                <p>¡Hola, {{ user.username }}! Nos alegra verte de nuevo.</p>
-                <p>Explora nuestros contenidos exclusivos o utiliza el menú superior para navegar.</p>
-                <a href="{% url 'accounts:login' %}" class="btn btn-logout">Cerrar sesión</a>
+                <p>¡Hola, {{ user.username }}! Puedes agendar una cita para el consultorio.</p>
+                <form method="POST" class="appointment-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-submit">Agendar Cita</button>
+                </form>
             {% else %}
                 <p>No has iniciado sesión.</p>
-                <p>Para disfrutar de todos los beneficios, por favor <a href="{% url 'accounts:login' %}" style="color: #4CAF50;">inicia sesión</a> o <a href="{% url 'accounts:signup' %}" style="color: #007BFF;">regístrate</a>.</p>
+                <p>Para agendar una cita, por favor <a href="{% url 'accounts:login' %}" style="color: #4CAF50;">inicia sesión</a> o <a href="{% url 'accounts:signup' %}" style="color: #007BFF;">regístrate</a>.</p>
             {% endif %}
         </div>
     </div>
